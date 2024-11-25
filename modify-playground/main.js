@@ -102,6 +102,7 @@ const vector = new VectorLayer({
       : feature.getGeometry();
     const result = calculateCenter(geometry);
     const center = result.center;
+    // on rajoute le style du centre avec sa géométrie
     if (center) {
       styles.push(
         new Style({
@@ -122,6 +123,7 @@ const vector = new VectorLayer({
         const points = coordinates.filter(function (coordinate, index) {
           return sqDistances[index] > rsq;
         });
+        // on rajoute la symbolisation des points après filtrage (si points trop proches)
         styles.push(
           new Style({
             geometry: new MultiPoint(points),
@@ -210,11 +212,11 @@ const modify = new Modify({
 
 
         if (initialRadius > minRadius) {
-          // on convertit la position originale du point à modifier en r,θ
+          // on récupère l'angle θ par rapport à l'abscisse du point original 
           const initialAngle = Math.atan2(dy, dx);
           dx = point[0] - center[0];
           dy = point[1] - center[1];
-          // on convertit la position courante du point modifié en r,θ
+          // on convertit le rayon r courant du point modifié
           const currentRadius = Math.sqrt(dx * dx + dy * dy);
           // On scale et rotate la géométrie initiale à partir de ces infos
           if (currentRadius > 0) {
